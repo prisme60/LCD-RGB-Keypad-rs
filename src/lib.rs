@@ -6,5 +6,4 @@ mod tests {
     }
 }
 
-
 pub mod glyphes;

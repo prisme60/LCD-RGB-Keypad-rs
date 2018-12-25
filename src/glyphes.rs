@@ -12,20 +12,38 @@ pub struct Glyphe {
 
 impl Glyphe {
     pub fn new(original: char, replacement: char, sprite: SpriteType) -> Self {
-        Glyphe { original, replacement, sprite: Some(sprite) }
+        Glyphe {
+            original,
+            replacement,
+            sprite: Some(sprite),
+        }
     }
 
     pub fn new_empty(original: char, replacement: char) -> Self {
-        Glyphe { original, replacement, sprite: None }
+        Glyphe {
+            original,
+            replacement,
+            sprite: None,
+        }
     }
 
     // printf "\e[LG0010101050D1F0C04;"  => 0 = [enter]
     // printf "\e[LG0 01 01 01 05 0D 1F 0C 04;"  => 0 = [enter]
     pub fn generate_glyph_code(&self, index: usize) -> String {
         match self.sprite {
-            Some(sprite) => format!("\x1b[LG{}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x};",
-                                    index, sprite[0], sprite[1], sprite[2], sprite[3], sprite[4], sprite[5], sprite[6], sprite[7]),
-            None => String::new()
+            Some(sprite) => format!(
+                "\x1b[LG{}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x};",
+                index,
+                sprite[0],
+                sprite[1],
+                sprite[2],
+                sprite[3],
+                sprite[4],
+                sprite[5],
+                sprite[6],
+                sprite[7]
+            ),
+            None => String::new(),
         }
     }
 }
@@ -151,17 +169,19 @@ pub fn convert_msg(message: &str, mut glyph_list: Vec<Glyphe>) -> String {
             // Glyph not in the list!
             None => match GLYPHES.get(&c) {
                 // Glyph is in the map
-                Some(g) => if glyph_list.len() < MAX_CUSTOM_CHAR {
-                    // Free place in the list!
-                    glyph_list.push((*g).clone());
-                    (glyph_list.len() - 1) as u8 as char
-                } else {
-                    // No free place in the list! So use replacement character instead having problem to display original character.
-                    g.replacement
-                },
+                Some(g) => {
+                    if glyph_list.len() < MAX_CUSTOM_CHAR {
+                        // Free place in the list!
+                        glyph_list.push((*g).clone());
+                        (glyph_list.len() - 1) as u8 as char
+                    } else {
+                        // No free place in the list! So use replacement character instead having problem to display original character.
+                        g.replacement
+                    }
+                }
                 // Glyph not in the map, used the character directly
-                None => c
-            }
+                None => c,
+            },
         });
     }
     new_msg
