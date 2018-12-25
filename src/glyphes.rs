@@ -1,28 +1,27 @@
 use lazy_static::lazy_static;
-
 use std::collections::HashMap;
 
 type SpriteType = [u8; 8];
 
 #[derive(Clone)]
 pub struct Glyphe {
-    original : char,
-    replacement : char,
-    sprite : Option<SpriteType>
+    original: char,
+    replacement: char,
+    sprite: Option<SpriteType>,
 }
 
 impl Glyphe {
-    pub fn new(original : char, replacement : char, sprite : SpriteType) -> Self {
-        Glyphe{original, replacement, sprite : Some(sprite)}
+    pub fn new(original: char, replacement: char, sprite: SpriteType) -> Self {
+        Glyphe { original, replacement, sprite: Some(sprite) }
     }
 
-    pub fn new_empty(original : char, replacement : char) -> Self {
-        Glyphe{original, replacement, sprite : None}
+    pub fn new_empty(original: char, replacement: char) -> Self {
+        Glyphe { original, replacement, sprite: None }
     }
 
     // printf "\e[LG0010101050D1F0C04;"  => 0 = [enter]
     // printf "\e[LG0 01 01 01 05 0D 1F 0C 04;"  => 0 = [enter]
-    pub fn generate_glyph_code(&self, index : usize) -> String {
+    pub fn generate_glyph_code(&self, index: usize) -> String {
         match self.sprite {
             Some(sprite) => format!("\x1b[LG{}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x};",
                                     index, sprite[0], sprite[1], sprite[2], sprite[3], sprite[4], sprite[5], sprite[6], sprite[7]),
@@ -31,7 +30,7 @@ impl Glyphe {
     }
 }
 
-static MAX_CUSTOM_CHAR : usize = 8;
+static MAX_CUSTOM_CHAR: usize = 8;
 
 lazy_static! {
     static ref GLYPHES: HashMap<char, Glyphe> = {
@@ -142,24 +141,24 @@ lazy_static! {
 }
 
 // return message and update glyph list
-pub fn convert_msg(message : &str, mut glyph_list : Vec<Glyphe>) -> String {
+pub fn convert_msg(message: &str, mut glyph_list: Vec<Glyphe>) -> String {
     let mut new_msg = String::new();
 
     for c in message.chars() {
-        new_msg.push(match glyph_list.iter().position(|g| g.original == c ) {
+        new_msg.push(match glyph_list.iter().position(|g| g.original == c) {
             // Glyph has already been added to the list, so use it!
             Some(g_pos) => g_pos as u8 as char,
             // Glyph not in the list!
             None => match GLYPHES.get(&c) {
                 // Glyph is in the map
                 Some(g) => if glyph_list.len() < MAX_CUSTOM_CHAR {
-                        // Free place in the list!
-                        glyph_list.push((*g).clone());
-                        (glyph_list.len() - 1) as u8 as char
-                    } else {
-                        // No free place in the list! So use replacement character instead having problem to display original character.
-                        g.replacement
-                    },
+                    // Free place in the list!
+                    glyph_list.push((*g).clone());
+                    (glyph_list.len() - 1) as u8 as char
+                } else {
+                    // No free place in the list! So use replacement character instead having problem to display original character.
+                    g.replacement
+                },
                 // Glyph not in the map, used the character directly
                 None => c
             }
@@ -168,7 +167,7 @@ pub fn convert_msg(message : &str, mut glyph_list : Vec<Glyphe>) -> String {
     new_msg
 }
 
-pub fn generate_glyphes_string(glyph_list : Vec<Glyphe>) -> String {
+pub fn generate_glyphes_string(glyph_list: Vec<Glyphe>) -> String {
     let mut glyph_string = String::new();
 
     for (i, g) in glyph_list.iter().enumerate() {
