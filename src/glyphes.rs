@@ -187,7 +187,7 @@ pub fn convert_msg(message: &str, glyph_list: &mut Vec<Glyphe>) -> String {
     new_msg
 }
 
-pub fn generate_glyphes_string(glyph_list: Vec<Glyphe>) -> String {
+pub fn generate_glyphes_string(glyph_list: &[Glyphe]) -> String {
     let mut glyph_string = String::new();
 
     for (i, g) in glyph_list.iter().enumerate() {
