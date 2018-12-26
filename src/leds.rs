@@ -1,6 +1,6 @@
+use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
-use std::error::Error;
 
 use bitflags::bitflags;
 
@@ -20,17 +20,15 @@ bitflags! {
     }
 }
 
-pub fn set(leds:Leds)
-{
-    write(LED_RED, leds & Leds::RED != Leds::empty() );
+pub fn set(leds: Leds) {
+    write(LED_RED, leds & Leds::RED != Leds::empty());
     write(LED_GREEN, leds & Leds::GREEN != Leds::empty());
     write(LED_BLUE, leds & Leds::GREEN != Leds::empty());
 }
 
-pub fn set_some(leds:Leds, on : bool)
-{
+pub fn set_some(leds: Leds, on: bool) {
     if leds & Leds::RED != Leds::empty() {
-        write(LED_RED, on );
+        write(LED_RED, on);
     }
     if leds & Leds::GREEN != Leds::empty() {
         write(LED_GREEN, on);
@@ -42,15 +40,13 @@ pub fn set_some(leds:Leds, on : bool)
 
 fn write(led_path: &str, on: bool) {
     let mut file = match File::open(led_path) {
-    // The `description` method of `io::Error` returns a string that
-    // describes the error
+        // The `description` method of `io::Error` returns a string that
+        // describes the error
         Err(why) => panic!("couldn't open {}: {}", led_path, why.description()),
         Ok(file) => file,
     };
-    match file.write(if on {b"1"} else {b"0"}) {
+    match file.write(if on { b"1" } else { b"0" }) {
         Err(why) => panic!("couldn't write {}: {}", led_path, why.description()),
         Ok(_) => {}
     }
 }
-
-
