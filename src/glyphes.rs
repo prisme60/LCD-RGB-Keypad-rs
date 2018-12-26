@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 type SpriteType = [u8; 8];
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Glyphe {
     original: char,
     replacement: char,
@@ -159,7 +159,7 @@ lazy_static! {
 }
 
 // return message and update glyph list
-pub fn convert_msg(message: &str, mut glyph_list: Vec<Glyphe>) -> String {
+pub fn convert_msg(message: &str, glyph_list: &mut Vec<Glyphe>) -> String {
     let mut new_msg = String::new();
 
     for c in message.chars() {
