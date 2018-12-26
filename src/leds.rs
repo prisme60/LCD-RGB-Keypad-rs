@@ -39,7 +39,7 @@ pub fn set_some(leds: Leds, on: bool) {
 }
 
 fn write(led_path: &str, on: bool) {
-    let mut file = match File::open(led_path) {
+    let mut file = match File::create(led_path) {
         // The `description` method of `io::Error` returns a string that
         // describes the error
         Err(why) => panic!("couldn't open {}: {}", led_path, why.description()),
