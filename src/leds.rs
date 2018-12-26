@@ -23,7 +23,7 @@ bitflags! {
 pub fn set(leds: Leds) {
     write(LED_RED, leds & Leds::RED != Leds::empty());
     write(LED_GREEN, leds & Leds::GREEN != Leds::empty());
-    write(LED_BLUE, leds & Leds::GREEN != Leds::empty());
+    write(LED_BLUE, leds & Leds::BLUE != Leds::empty());
 }
 
 pub fn set_some(leds: Leds, on: bool) {
@@ -33,7 +33,7 @@ pub fn set_some(leds: Leds, on: bool) {
     if leds & Leds::GREEN != Leds::empty() {
         write(LED_GREEN, on);
     }
-    if leds & Leds::GREEN != Leds::empty() {
+    if leds & Leds::BLUE != Leds::empty() {
         write(LED_BLUE, on);
     }
 }
