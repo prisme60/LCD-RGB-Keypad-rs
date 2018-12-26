@@ -45,7 +45,7 @@ fn write(led_path: &str, on: bool) {
         Err(why) => panic!("couldn't open {}: {}", led_path, why.description()),
         Ok(file) => file,
     };
-    match file.write(if on { b"1" } else { b"0" }) {
+    match file.write(if on { b"1\n" } else { b"0\n" }) {
         Err(why) => panic!("couldn't write {}: {}", led_path, why.description()),
         Ok(_) => {}
     }
