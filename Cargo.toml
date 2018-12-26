@@ -5,4 +5,5 @@ authors = ["Christian FOUCHER <christian.foucher@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-lazy_static = "1.2.*"
+lazy_static = "1.2"
+bitflags = "1.0"

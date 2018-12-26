@@ -1,4 +1,5 @@
 pub mod lcd;
+pub mod leds;
 
 #[cfg(test)]
 mod tests {
