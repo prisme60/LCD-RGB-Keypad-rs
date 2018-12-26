@@ -21,19 +21,19 @@ bitflags! {
 }
 
 pub fn set(leds: Leds) {
-    write(LED_RED, leds & Leds::RED != Leds::empty());
-    write(LED_GREEN, leds & Leds::GREEN != Leds::empty());
-    write(LED_BLUE, leds & Leds::BLUE != Leds::empty());
+    write(LED_RED, leds.contains(Leds::RED));
+    write(LED_GREEN, leds.contains(Leds::GREEN));
+    write(LED_BLUE, leds.contains(Leds::BLUE));
 }
 
 pub fn set_some(leds: Leds, on: bool) {
-    if leds & Leds::RED != Leds::empty() {
+    if leds.contains(Leds::RED) {
         write(LED_RED, on);
     }
-    if leds & Leds::GREEN != Leds::empty() {
+    if leds.contains(Leds::GREEN) {
         write(LED_GREEN, on);
     }
-    if leds & Leds::BLUE != Leds::empty() {
+    if leds.contains(Leds::BLUE) {
         write(LED_BLUE, on);
     }
 }
