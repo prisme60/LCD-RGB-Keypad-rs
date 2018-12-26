@@ -32,7 +32,10 @@ impl Glyphe {
     pub fn generate_glyph_code(&self, index: usize) -> String {
         match self.sprite {
             Some(sprite) => format!(
-                "\x1b[LG{}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x};",
+                concat!(
+                    escape!(),
+                    "G{}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x};"
+                ),
                 index,
                 sprite[0],
                 sprite[1],

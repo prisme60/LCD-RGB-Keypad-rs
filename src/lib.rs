@@ -1,8 +1,8 @@
-pub mod glyphes;
+pub mod lcd;
 
 #[cfg(test)]
 mod tests {
-    use crate::glyphes;
+    use crate::lcd::glyphes;
     #[test]
     fn it_works() {
         let mut v = vec![];
