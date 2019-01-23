@@ -38,4 +38,4 @@ pub fn goto_xy(x: usize, y: usize) -> String {
 
 pub const BEGIN_OF_LINE: char = '\r';
 pub const NEXT_LINE: char = '\n';
-pub const CLEAR_DISPLAY: char = '\x0e';
+pub const CLEAR_DISPLAY: char = '\x0c'; // is the '\f' of the C/C++ lang
