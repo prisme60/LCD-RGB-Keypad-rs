@@ -5,7 +5,7 @@ pub mod leds;
 mod tests {
     use crate::lcd::glyphes;
     #[test]
-    fn it_works() {
+    fn test_special_character_replacement() {
         let mut v = vec![];
         assert_eq!(glyphes::convert_msg("Coucou é", &mut v), "Coucou \x00");
         assert_eq!(

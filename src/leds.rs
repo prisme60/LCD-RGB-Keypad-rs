@@ -10,9 +10,9 @@ const LED_BLUE: &str = "/sys/class/leds/blue/brightness";
 
 bitflags! {
     pub struct Leds: u32 {
-        const RED = 0b00000001;
-        const GREEN = 0b00000010;
-        const BLUE = 0b00000100;
+        const RED = 0b0000_0001;
+        const GREEN = 0b0000_0010;
+        const BLUE = 0b0000_0100;
         const YELLOW = Self::RED.bits | Self::GREEN.bits;
         const TEAL = Self::GREEN.bits | Self::BLUE.bits;
         const VIOLET = Self::RED.bits | Self::BLUE.bits;
@@ -45,8 +45,7 @@ fn write(led_path: &str, on: bool) {
         Err(why) => panic!("couldn't open {}: {}", led_path, why.description()),
         Ok(file) => file,
     };
-    match file.write(if on { b"1\n" } else { b"0\n" }) {
-        Err(why) => panic!("couldn't write {}: {}", led_path, why.description()),
-        Ok(_) => {}
+    if let Err(why) = file.write(if on { b"1\n" } else { b"0\n" }) {
+        panic!("couldn't write {}: {}", led_path, why.description())
     }
 }

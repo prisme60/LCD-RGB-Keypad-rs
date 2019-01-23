@@ -54,5 +54,12 @@ impl Lcd {
             ),
             Ok(_) => self.text.clear(),
         }
+        if let Err(why) = self.device_file.flush() {
+            panic!(
+                "couldn't flush to display: {} :  {}",
+                why.description(),
+                self.text
+            )
+        }
     }
 }
