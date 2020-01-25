@@ -1,9 +1,9 @@
 [package]
 name = "lcd_rgb_keypad"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Christian FOUCHER <christian.foucher@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-lazy_static = "1.2"
-bitflags = "1.0"
+lazy_static = "1.4"
+bitflags = "1.2"
